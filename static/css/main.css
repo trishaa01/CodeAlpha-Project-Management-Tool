@@ -1,0 +1,27 @@
+/* TaskFlow - Main Stylesheet */
+:root {
+    --bg: #0f1117;
+    --bg2: #1a1d27;
+    --bg3: #242736;
+    --border: #2e3148;
+    --text: #e2e4f0;
+    --muted: #8b8fa8;
+    --purple: #7c6ff7;
+    --purple-light: #a89bf5;
+    --teal: #2dd4bf;
+    --danger: #f87171;
+    --warning: #fbbf24;
+    --success: #34d399;
+    --radius: 10px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100vh;
+}

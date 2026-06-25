@@ -1,4 +1,5 @@
-/* TaskFlow - Main Stylesheet */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
 :root {
     --bg: #0f1117;
     --bg2: #1a1d27;
@@ -15,8 +16,6 @@
     --radius: 10px;
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
-
 body {
     background: var(--bg);
     color: var(--text);
@@ -25,3 +24,165 @@ body {
     line-height: 1.6;
     min-height: 100vh;
 }
+
+a { color: var(--purple-light); text-decoration: none; }
+a:hover { color: var(--purple); }
+
+/* Navbar */
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 32px;
+    height: 58px;
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+.nav-brand a {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--purple-light);
+}
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    font-size: 14px;
+}
+.nav-links a { color: var(--muted); }
+.nav-links a:hover { color: var(--text); }
+.btn-logout {
+    border: 1px solid var(--border);
+    padding: 5px 14px;
+    border-radius: 6px;
+    color: var(--muted) !important;
+    transition: all 0.2s;
+}
+.btn-logout:hover {
+    border-color: var(--danger);
+    color: var(--danger) !important;
+}
+.badge {
+    background: var(--danger);
+    color: #fff;
+    border-radius: 50%;
+    padding: 1px 6px;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+/* Container */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 32px 24px;
+}
+
+/* Alerts */
+.alert {
+    padding: 12px 18px;
+    border-radius: var(--radius);
+    margin-bottom: 20px;
+    font-size: 14px;
+    border-left: 4px solid;
+}
+.alert-success { background: #0d2e22; border-color: var(--success); color: var(--success); }
+.alert-error, .alert-danger { background: #2e0d0d; border-color: var(--danger); color: var(--danger); }
+.alert-warning { background: #2e220d; border-color: var(--warning); color: var(--warning); }
+.alert-info { background: #0d1e2e; border-color: var(--purple); color: var(--purple-light); }
+
+/* Buttons */
+.btn {
+    display: inline-block;
+    padding: 9px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+}
+.btn-primary { background: var(--purple); color: #fff; }
+.btn-primary:hover { background: var(--purple-light); color: #fff; }
+.btn-outline {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text);
+}
+.btn-outline:hover { border-color: var(--purple); color: var(--purple-light); }
+.btn-danger {
+    background: transparent;
+    border: 1px solid var(--danger);
+    color: var(--danger);
+}
+.btn-danger:hover { background: var(--danger); color: #fff; }
+.btn-sm { padding: 5px 12px; font-size: 13px; }
+
+/* Cards */
+.card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+}
+
+/* Forms */
+.form-group { margin-bottom: 18px; }
+.form-group label {
+    display: block;
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 6px;
+}
+.form-group input,
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    color: var(--text);
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+}
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus { border-color: var(--purple); }
+.form-group textarea { resize: vertical; min-height: 90px; }
+
+/* Page header */
+.page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 28px;
+}
+.page-header h1 { font-size: 1.5rem; font-weight: 600; }
+
+/* Auth pages */
+.auth-wrapper {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+}
+.auth-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 40px;
+    width: 100%;
+    max-width: 460px;
+}
+.auth-header { text-align: center; margin-bottom: 32px; }
+.auth-header h1 { font-size: 1.8rem; color: var(--purple-light); margin-bottom: 8px; }
+.auth-header p { color: var(--muted); font-size: 14px; }
+.auth-footer { text-align: center; margin-top: 24px; font-size: 14px; color: var(--muted); }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.field-error { color: var(--danger); font-size: 12px; margin-top: 4px; display: block; }

@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}New Project — TaskFlow{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Create New Project</h1>
+    <a href="/projects/" class="btn btn-outline">← Back</a>
+</div>
+
+<div class="card" style="max-width:560px;">
+    <form method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+            <label>Project Name</label>
+            <input type="text" name="name" class="form-input" placeholder="e.g. Website Redesign" autofocus>
+        </div>
+        <div class="form-group">
+            <label>Description</label>
+            <textarea name="description" class="form-input" placeholder="What is this project about?"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Create Project</button>
+    </form>
+</div>
+{% endblock %}

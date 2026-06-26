@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard — TaskFlow{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>My Projects</h1>
+    <a href="/projects/create/" class="btn btn-primary">+ New Project</a>
+</div>
+
+{% if owned %}
+<h2 style="font-size:1rem;color:var(--muted);margin-bottom:16px;">Projects I Own</h2>
+<div class="projects-grid">
+    {% for project in owned %}
+    <a href="/projects/{{ project.pk }}/" class="project-card">
+        <div class="project-card-header">
+            <span class="project-icon">⚡</span>
+            <span class="project-role owner">Owner</span>
+        </div>
+        <h3>{{ project.name }}</h3>
+        <p>{{ project.description|truncatechars:80 }}</p>
+        <div class="project-meta">
+            Created {{ project.created_at|date:"M d, Y" }}
+        </div>
+    </a>
+    {% endfor %}
+</div>
+{% endif %}
+
+{% if member_of %}
+<h2 style="font-size:1rem;color:var(--muted);margin:32px 0 16px;">Projects I'm In</h2>
+<div class="projects-grid">
+    {% for project in member_of %}
+    <a href="/projects/{{ project.pk }}/" class="project-card">
+        <div class="project-card-header">
+            <span class="project-icon">📋</span>
+            <span class="project-role member">Member</span>
+        </div>
+        <h3>{{ project.name }}</h3>
+        <p>{{ project.description|truncatechars:80 }}</p>
+        <div class="project-meta">
+            Created {{ project.created_at|date:"M d, Y" }}
+        </div>
+    </a>
+    {% endfor %}
+</div>
+{% endif %}
+
+{% if not owned and not member_of %}
+<div class="empty-state">
+    <div class="empty-icon">📋</div>
+    <h3>No projects yet</h3>
+    <p>Create your first project to get started</p>
+    <a href="/projects/create/" class="btn btn-primary" style="margin-top:16px;">Create Project</a>
+</div>
+{% endif %}
+
+{% endblock %}

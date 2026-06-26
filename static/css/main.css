@@ -186,3 +186,18 @@ a:hover { color: var(--purple); }
 .auth-footer { text-align: center; margin-top: 24px; font-size: 14px; color: var(--muted); }
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 .field-error { color: var(--danger); font-size: 12px; margin-top: 4px; display: block; }
+
+/* Fix form input styling from Django widgets */
+.form-input {
+    width: 100%;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    color: var(--text);
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+    font-family: inherit;
+}
+.form-input:focus { border-color: var(--purple); }

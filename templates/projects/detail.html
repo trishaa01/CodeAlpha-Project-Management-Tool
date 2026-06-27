@@ -44,7 +44,6 @@
     {% endif %}
 </div>
 
-<!-- Tasks section placeholder -->
 <!-- Tasks section -->
 <div class="card">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
@@ -54,11 +53,11 @@
 
     <div class="kanban-board">
         <!-- To Do -->
-        <div class="kanban-col">
+        <div class="kanban-col" data-status="todo">
             <div class="kanban-col-header todo">To Do</div>
             {% for task in project.tasks.all %}
                 {% if task.status == 'todo' %}
-                <a href="/tasks/{{ task.pk }}/" class="task-card">
+                <a href="/tasks/{{ task.pk }}/" class="task-card" data-task-id="{{ task.pk }}">
                     <div class="task-card-title">{{ task.title }}</div>
                     <div class="task-card-meta">
                         <span class="task-priority {{ task.priority }}">{{ task.get_priority_display }}</span>
@@ -68,16 +67,15 @@
                     </div>
                 </a>
                 {% endif %}
-            {% empty %}
             {% endfor %}
         </div>
 
         <!-- In Progress -->
-        <div class="kanban-col">
+        <div class="kanban-col" data-status="in_progress">
             <div class="kanban-col-header in_progress">In Progress</div>
             {% for task in project.tasks.all %}
                 {% if task.status == 'in_progress' %}
-                <a href="/tasks/{{ task.pk }}/" class="task-card">
+                <a href="/tasks/{{ task.pk }}/" class="task-card" data-task-id="{{ task.pk }}">
                     <div class="task-card-title">{{ task.title }}</div>
                     <div class="task-card-meta">
                         <span class="task-priority {{ task.priority }}">{{ task.get_priority_display }}</span>
@@ -91,11 +89,11 @@
         </div>
 
         <!-- Done -->
-        <div class="kanban-col">
+        <div class="kanban-col" data-status="done">
             <div class="kanban-col-header done">Done</div>
             {% for task in project.tasks.all %}
                 {% if task.status == 'done' %}
-                <a href="/tasks/{{ task.pk }}/" class="task-card">
+                <a href="/tasks/{{ task.pk }}/" class="task-card" data-task-id="{{ task.pk }}">
                     <div class="task-card-title">{{ task.title }}</div>
                     <div class="task-card-meta">
                         <span class="task-priority {{ task.priority }}">{{ task.get_priority_display }}</span>
@@ -110,4 +108,45 @@
     </div>
 </div>
 
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    const projectId = {{ project.pk }};
+    const wsUrl = `ws://${window.location.host}/ws/projects/${projectId}/`;
+    let socket = new WebSocket(wsUrl);
+
+    socket.onopen = function() {
+        console.log('WebSocket connected to project board');
+    };
+
+    socket.onmessage = function(e) {
+        const data = JSON.parse(e.data);
+        if (data.type === 'task_update') {
+            updateTaskCard(data.task_id, data.status, data.title);
+        }
+    };
+
+    socket.onclose = function() {
+        console.log('WebSocket disconnected — reconnecting in 3s...');
+        setTimeout(() => {
+            socket = new WebSocket(wsUrl);
+        }, 3000);
+    };
+
+    function updateTaskCard(taskId, newStatus, title) {
+        const existing = document.querySelector(`[data-task-id="${taskId}"]`);
+        if (existing) existing.remove();
+
+        const col = document.querySelector(`.kanban-col[data-status="${newStatus}"]`);
+        if (col) {
+            const card = document.createElement('a');
+            card.href = `/tasks/${taskId}/`;
+            card.className = 'task-card';
+            card.setAttribute('data-task-id', taskId);
+            card.innerHTML = `<div class="task-card-title">${title}</div>`;
+            col.appendChild(card);
+        }
+    }
+</script>
 {% endblock %}

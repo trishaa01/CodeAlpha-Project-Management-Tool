@@ -1,8 +1,18 @@
 # ⚡ TaskFlow — Project Management Tool
 
-A full-stack collaborative project management tool built with Django, similar to Trello and Asana.
+> A full-stack collaborative project management tool built with Django, similar to Trello and Asana.
 
-## Features
+---
+
+## 🌐 Live Demo
+
+```
+https://project-management-tool-7gh1.onrender.com
+```
+
+---
+
+## ✨ Features
 
 - 🔐 **User Authentication** — Register, login, logout, and profile management
 - 📋 **Project Management** — Create projects, invite members, manage roles
@@ -10,79 +20,118 @@ A full-stack collaborative project management tool built with Django, similar to
 - 💬 **Comments** — Comment and communicate within tasks
 - 🔔 **Notifications** — In-app notifications for task assignments and comments
 - 👥 **Team Collaboration** — Invite members to projects, assign tasks to teammates
+- ⚡ **Real-time Updates** — Live task and comment updates using WebSockets
 
-## Tech Stack
+---
 
-- **Backend:** Django 4.x, Python 3.x
-- **Database:** SQLite (development)
-- **Frontend:** HTML5, CSS3, Vanilla JavaScript
-- **Auth:** Django built-in authentication system
+## 🛠️ Tech Stack
 
-## Project Structure
 ```
-taskflow/
-
-├── accounts/        # User auth and profiles
-
-├── projects/        # Project and membership management
-
-├── tasks/           # Task CRUD and Kanban board
-
-├── comments/        # Task comments
-
-├── notifications/   # In-app notification system
-
-├── core/            # Django project settings
-
-├── templates/       # HTML templates
-
-└── static/          # CSS and JS files
+Backend     : Django 4.x, Python 3.x
+Real-time   : Django Channels + Redis (WebSockets)
+Database    : SQLite (development)
+Frontend    : HTML5, CSS3, Vanilla JavaScript
+Auth        : Django built-in authentication
+Deployment  : Render (Daphne ASGI server)
 ```
-## Setup Instructions
 
-1. Clone the repository
+---
+
+## 📁 Project Structure
+
+```
+CodeAlpha-Project-Management-Tool/
+├── accounts/            # User auth and profiles
+├── projects/            # Project and membership management
+├── tasks/               # Task CRUD and Kanban board
+├── comments/            # Task comments
+├── notifications/       # In-app notification system
+├── core/                # Django project settings and ASGI config
+├── templates/           # HTML templates
+│   ├── base.html
+│   ├── accounts/
+│   ├── projects/
+│   ├── tasks/
+│   ├── comments/
+│   └── notifications/
+├── static/              # CSS and JS files
+│   ├── css/main.css
+│   └── js/main.js
+├── manage.py
+├── requirements.txt
+├── build.sh
+└── render.yaml
+```
+
+---
+
+## ⚙️ Setup Instructions
+
+### 1. Clone the repository
 ```bash
-git clone https://github.com/trishaa01/project-management-tool.git
-cd project-management-tool
+git clone https://github.com/trishaa01/CodeAlpha-Project-Management-Tool.git
+cd CodeAlpha-Project-Management-Tool
 ```
 
-2. Create and activate virtual environment
+### 2. Create and activate virtual environment
 ```bash
 python -m venv venv
-venv\Scripts\activate  # Windows
+venv\Scripts\activate   # Windows
 source venv/bin/activate  # Mac/Linux
 ```
 
-3. Install dependencies
+### 3. Install dependencies
 ```bash
 pip install -r requirements.txt
 ```
 
-4. Run migrations
+### 4. Run migrations
 ```bash
 python manage.py migrate
 ```
 
-5. Start the development server
+### 5. Start the development server
 ```bash
 python manage.py runserver
 ```
 
-6. Open your browser at `http://127.0.0.1:8000`
+### 6. Open in browser
+```
+http://127.0.0.1:8000
+```
 
-### Dashboard
-Clean dark-themed project dashboard showing all your projects.
+---
 
-### Kanban Board
-Three-column task board — To Do, In Progress, and Done.
+## 🚀 How to Use
 
-### Notifications
-Real-time in-app notifications for task assignments and comments.
+```
+1. Register a new account at /accounts/register/
+2. Create a new project from the dashboard
+3. Invite team members by username
+4. Add tasks to the Kanban board
+5. Assign tasks to members, set priority and due date
+6. Comment on tasks in real-time
+7. Get notified when tasks are assigned or commented on
+```
 
-## Future Improvements
+---
 
-- WebSocket support for real-time updates
-- Drag and drop task cards
-- File attachments on tasks
-- Due date reminders
-- Mobile responsive design improvements
+## ☁️ Deployment
+
+```
+Platform      : Render
+ASGI Server   : Daphne (for WebSocket support)
+Channel Layer : Redis (Render Key Value)
+Static Files  : WhiteNoise
+```
+
+---
+
+## 👩‍💻 Author
+
+```
+Name     : Trisha
+GitHub   : https://github.com/trishaa01
+```
+
+---

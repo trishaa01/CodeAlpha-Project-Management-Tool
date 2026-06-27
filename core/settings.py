@@ -111,3 +111,7 @@ CHANNEL_LAYERS = {
         },
     },
 }
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://project-management-tool-7gh1.onrender.com',
+]

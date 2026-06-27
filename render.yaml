@@ -1,11 +1,13 @@
 services:
   - type: web
-    name: taskflow
+    name: project-management-tool
     env: python
     buildCommand: "./build.sh"
-    startCommand: "gunicorn core.wsgi:application"
+    startCommand: "daphne core.asgi:application --port $PORT --bind 0.0.0.0"
     envVars:
       - key: SECRET_KEY
         generateValue: true
       - key: DEBUG
         value: false
+      - key: REDIS_URL
+        value: redis://red-d8vupg9o3t8c73bo9u3g:6379

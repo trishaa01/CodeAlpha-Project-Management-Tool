@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block title %}Edit Task — TaskFlow{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Edit Task</h1>
+    <a href="/tasks/{{ task.pk }}/" class="btn btn-outline">← Back</a>
+</div>
+
+<div class="card" style="max-width:560px;">
+    <form method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+            <label>Task Title</label>
+            <input type="text" name="title" class="form-input" value="{{ task.title }}">
+        </div>
+        <div class="form-group">
+            <label>Description</label>
+            <textarea name="description" class="form-input">{{ task.description }}</textarea>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label>Status</label>
+                <select name="status" class="form-input">
+                    <option value="todo" {% if task.status == 'todo' %}selected{% endif %}>To Do</option>
+                    <option value="in_progress" {% if task.status == 'in_progress' %}selected{% endif %}>In Progress</option>
+                    <option value="done" {% if task.status == 'done' %}selected{% endif %}>Done</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Priority</label>
+                <select name="priority" class="form-input">
+                    <option value="low" {% if task.priority == 'low' %}selected{% endif %}>Low</option>
+                    <option value="medium" {% if task.priority == 'medium' %}selected{% endif %}>Medium</option>
+                    <option value="high" {% if task.priority == 'high' %}selected{% endif %}>High</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label>Due Date</label>
+                <input type="date" name="due_date" class="form-input" value="{{ task.due_date|date:'Y-m-d' }}">
+            </div>
+            <div class="form-group">
+                <label>Assign To</label>
+                <select name="assigned_to" class="form-input">
+                    <option value="">Unassigned</option>
+                    {% for member in members %}
+                    <option value="{{ member.pk }}" {% if task.assigned_to == member %}selected{% endif %}>
+                        {{ member.username }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+    </form>
+</div>
+{% endblock %}

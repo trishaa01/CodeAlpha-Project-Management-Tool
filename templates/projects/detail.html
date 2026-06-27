@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+{% block title %}{{ project.name }} — TaskFlow{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1>{{ project.name }}</h1>
+        <p style="color:var(--muted);margin-top:4px;">{{ project.description }}</p>
+    </div>
+    <div style="display:flex;gap:10px;">
+        <a href="/projects/" class="btn btn-outline btn-sm">← Dashboard</a>
+        {% if project.owner == request.user %}
+        <a href="/projects/{{ project.pk }}/delete/" class="btn btn-danger btn-sm">Delete</a>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Members section -->
+<div class="card" style="margin-bottom:24px;">
+    <h2 style="font-size:1rem;margin-bottom:16px;">Members</h2>
+    <div class="members-list">
+        {% for member in members %}
+        <div class="member-item">
+            <div class="member-avatar">{{ member.username|first|upper }}</div>
+            <div>
+                <div style="font-size:14px;font-weight:500;">{{ member.username }}</div>
+                <div style="font-size:12px;color:var(--muted);">
+                    {% if member == project.owner %}Owner{% else %}Member{% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    {% if project.owner == request.user %}
+    <div style="margin-top:20px;padding-top:20px;border-top:1px solid var(--border);">
+        <h3 style="font-size:13px;color:var(--muted);margin-bottom:10px;">Invite Member</h3>
+        <form method="POST" action="/projects/{{ project.pk }}/invite/" style="display:flex;gap:10px;">
+            {% csrf_token %}
+            <input type="text" name="username" class="form-input" placeholder="Enter username" style="flex:1;">
+            <button type="submit" class="btn btn-primary btn-sm">Invite</button>
+        </form>
+    </div>
+    {% endif %}
+</div>
+
+<!-- Tasks section placeholder -->
+<!-- Tasks section -->
+<div class="card">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+        <h2 style="font-size:1rem;">Task Board</h2>
+        <a href="/tasks/create/{{ project.pk }}/" class="btn btn-primary btn-sm">+ Add Task</a>
+    </div>
+
+    <div class="kanban-board">
+        <!-- To Do -->
+        <div class="kanban-col">
+            <div class="kanban-col-header todo">To Do</div>
+            {% for task in project.tasks.all %}
+                {% if task.status == 'todo' %}
+                <a href="/tasks/{{ task.pk }}/" class="task-card">
+                    <div class="task-card-title">{{ task.title }}</div>
+                    <div class="task-card-meta">
+                        <span class="task-priority {{ task.priority }}">{{ task.get_priority_display }}</span>
+                        {% if task.assigned_to %}
+                        <span style="font-size:12px;color:var(--muted);">{{ task.assigned_to.username }}</span>
+                        {% endif %}
+                    </div>
+                </a>
+                {% endif %}
+            {% empty %}
+            {% endfor %}
+        </div>
+
+        <!-- In Progress -->
+        <div class="kanban-col">
+            <div class="kanban-col-header in_progress">In Progress</div>
+            {% for task in project.tasks.all %}
+                {% if task.status == 'in_progress' %}
+                <a href="/tasks/{{ task.pk }}/" class="task-card">
+                    <div class="task-card-title">{{ task.title }}</div>
+                    <div class="task-card-meta">
+                        <span class="task-priority {{ task.priority }}">{{ task.get_priority_display }}</span>
+                        {% if task.assigned_to %}
+                        <span style="font-size:12px;color:var(--muted);">{{ task.assigned_to.username }}</span>
+                        {% endif %}
+                    </div>
+                </a>
+                {% endif %}
+            {% endfor %}
+        </div>
+
+        <!-- Done -->
+        <div class="kanban-col">
+            <div class="kanban-col-header done">Done</div>
+            {% for task in project.tasks.all %}
+                {% if task.status == 'done' %}
+                <a href="/tasks/{{ task.pk }}/" class="task-card">
+                    <div class="task-card-title">{{ task.title }}</div>
+                    <div class="task-card-meta">
+                        <span class="task-priority {{ task.priority }}">{{ task.get_priority_display }}</span>
+                        {% if task.assigned_to %}
+                        <span style="font-size:12px;color:var(--muted);">{{ task.assigned_to.username }}</span>
+                        {% endif %}
+                    </div>
+                </a>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

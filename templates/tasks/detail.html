@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% block title %}{{ task.title }} — TaskFlow{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1>{{ task.title }}</h1>
+        <p style="color:var(--muted);margin-top:4px;">{{ project.name }}</p>
+    </div>
+    <div style="display:flex;gap:10px;">
+        <a href="/projects/{{ project.pk }}/" class="btn btn-outline btn-sm">← Board</a>
+        <a href="/tasks/{{ task.pk }}/update/" class="btn btn-outline btn-sm">Edit</a>
+        <a href="/tasks/{{ task.pk }}/delete/" class="btn btn-danger btn-sm">Delete</a>
+    </div>
+</div>
+
+<div style="display:grid;grid-template-columns:1fr 320px;gap:24px;">
+    <!-- Left: task info + comments -->
+    <div>
+        <div class="card" style="margin-bottom:20px;">
+            <h2 style="font-size:1rem;margin-bottom:16px;">Details</h2>
+            <p style="color:var(--muted);font-size:14px;margin-bottom:16px;">
+                {{ task.description|default:"No description provided." }}
+            </p>
+            <div style="display:flex;gap:24px;flex-wrap:wrap;">
+                <div>
+                    <div style="font-size:12px;color:var(--muted);">Status</div>
+                    <span class="task-status {{ task.status }}">{{ task.get_status_display }}</span>
+                </div>
+                <div>
+                    <div style="font-size:12px;color:var(--muted);">Priority</div>
+                    <span class="task-priority {{ task.priority }}">{{ task.get_priority_display }}</span>
+                </div>
+                <div>
+                    <div style="font-size:12px;color:var(--muted);">Assigned To</div>
+                    <div style="font-size:14px;">{{ task.assigned_to.username|default:"Unassigned" }}</div>
+                </div>
+                <div>
+                    <div style="font-size:12px;color:var(--muted);">Due Date</div>
+                    <div style="font-size:14px;">{{ task.due_date|default:"No due date" }}</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Comments -->
+        <div class="card">
+            <h2 style="font-size:1rem;margin-bottom:16px;">Comments</h2>
+            {% for comment in comments %}
+            <div class="comment-item">
+                <div class="member-avatar" style="width:32px;height:32px;font-size:12px;">
+                    {{ comment.author.username|first|upper }}
+                </div>
+                <div style="flex:1;">
+                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+                        <span style="font-size:13px;font-weight:500;">{{ comment.author.username }}</span>
+                        <span style="font-size:12px;color:var(--muted);">{{ comment.created_at|date:"M d, Y H:i" }}</span>
+                    </div>
+                    <p style="font-size:14px;color:var(--muted);">{{ comment.body }}</p>
+                </div>
+            </div>
+            {% empty %}
+            <p style="color:var(--muted);font-size:14px;">No comments yet. Be the first!</p>
+            {% endfor %}
+
+            <form method="POST" action="/comments/add/{{ task.pk }}/" style="margin-top:20px;">
+                {% csrf_token %}
+                <div class="form-group">
+                    <textarea name="body" class="form-input" placeholder="Write a comment..." rows="3"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary btn-sm">Post Comment</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Right: update status -->
+    <div>
+        <div class="card">
+            <h2 style="font-size:1rem;margin-bottom:16px;">Update Status</h2>
+            <form method="POST" action="/tasks/{{ task.pk }}/status/">
+                {% csrf_token %}
+                <div class="form-group">
+                    <select name="status" class="form-input">
+                        <option value="todo" {% if task.status == 'todo' %}selected{% endif %}>To Do</option>
+                        <option value="in_progress" {% if task.status == 'in_progress' %}selected{% endif %}>In Progress</option>
+                        <option value="done" {% if task.status == 'done' %}selected{% endif %}>Done</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width:100%;">Update</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,2 +1,9 @@
 from django.urls import path
-urlpatterns = []
+from . import views
+
+app_name = 'comments'
+
+urlpatterns = [
+    path('add/<int:task_pk>/', views.add_comment, name='add'),
+    path('delete/<int:pk>/', views.delete_comment, name='delete'),
+]

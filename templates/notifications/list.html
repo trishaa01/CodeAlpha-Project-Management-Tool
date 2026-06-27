@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block title %}Notifications — TaskFlow{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Notifications</h1>
+    {% if notifications %}
+    <form method="POST" action="/notifications/clear/">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-outline btn-sm">Clear All</button>
+    </form>
+    {% endif %}
+</div>
+
+{% if notifications %}
+<div class="notifications-list">
+    {% for notif in notifications %}
+    <div class="notif-item {% if not notif.is_read %}unread{% endif %}">
+        <div class="notif-icon">
+            {% if notif.notif_type == 'task_assigned' %}🎯
+            {% elif notif.notif_type == 'comment_added' %}💬
+            {% elif notif.notif_type == 'project_invite' %}📋
+            {% else %}🔔
+            {% endif %}
+        </div>
+        <div class="notif-body">
+            <p>{{ notif.message }}</p>
+            <span class="notif-time">{{ notif.created_at|date:"M d, Y H:i" }}</span>
+        </div>
+        {% if not notif.is_read %}
+        <span class="notif-dot"></span>
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="empty-state">
+    <div class="empty-icon">🔔</div>
+    <h3>No notifications</h3>
+    <p>You're all caught up!</p>
+</div>
+{% endif %}
+
+{% endblock %}

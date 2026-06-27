@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import Comment
 from tasks.models import Task
+from notifications.models import Notification
 
 
 @login_required
@@ -17,6 +18,19 @@ def add_comment(request, task_pk):
         body = request.POST.get('body', '').strip()
         if body:
             Comment.objects.create(task=task, author=request.user, body=body)
+            # notify task owner/assignee
+            if task.assigned_to and task.assigned_to != request.user:
+                Notification.objects.create(
+                    recipient=task.assigned_to,
+                    message=f'{request.user.username} commented on "{task.title}": "{body[:60]}"',
+                    notif_type='comment_added'
+                )
+            if task.created_by != request.user:
+                Notification.objects.create(
+                    recipient=task.created_by,
+                    message=f'{request.user.username} commented on your task "{task.title}"',
+                    notif_type='comment_added'
+                )
             messages.success(request, 'Comment added!')
         else:
             messages.error(request, 'Comment cannot be empty.')

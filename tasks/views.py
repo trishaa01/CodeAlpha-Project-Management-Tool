@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import Task
 from projects.models import Project, Membership
+from notifications.models import Notification
 
 
 @login_required
@@ -34,6 +35,13 @@ def create_task(request, project_pk):
             assigned_to_id=assigned_to_id,
             created_by=request.user,
         )
+        # notify assigned user
+        if task.assigned_to and task.assigned_to != request.user:
+            Notification.objects.create(
+                recipient=task.assigned_to,
+                message=f'{request.user.username} assigned you a task: "{task.title}" in {project.name}',
+                notif_type='task_assigned'
+            )
         messages.success(request, 'Task created successfully!')
         return redirect('projects:detail', pk=project_pk)
 

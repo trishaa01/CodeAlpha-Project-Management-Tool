@@ -345,3 +345,28 @@ a:hover { color: var(--purple); }
     border-bottom: 1px solid var(--border);
 }
 .comment-item:last-of-type { border-bottom: none; }
+
+/* Notifications */
+.notifications-list { display: flex; flex-direction: column; gap: 12px; }
+.notif-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px 20px;
+    position: relative;
+}
+.notif-item.unread { border-color: var(--purple); background: #1a1d33; }
+.notif-icon { font-size: 1.4rem; }
+.notif-body { flex: 1; }
+.notif-body p { font-size: 14px; margin-bottom: 4px; }
+.notif-time { font-size: 12px; color: var(--muted); }
+.notif-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--purple);
+    flex-shrink: 0;
+}
